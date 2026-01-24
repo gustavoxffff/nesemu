@@ -1,12 +1,12 @@
 #include <stdint.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#include "romUtils.h"
+#include "Rom.h"
+#include "Decoder.h"
 #include "Result.h"
 
-uint8_t mem[65535];
 int cpuHz = 1790000000;
 
 int main(int argc, char **argv) {
@@ -22,12 +22,12 @@ int main(int argc, char **argv) {
     }
 
     ROM game;
-    Result r;
     memset(&game, 0, sizeof(ROM));
+    ResultVoid res = readFromFile(argv[1], &game);
 
-    if((r = readFromFile(argv[1], &game)).err) {
-        fprintf(stderr, "%s\n", r.err);
-        return -1;
+    if(res.err) {
+        fprintf(stderr, "%s\n", res.err);
+        exit(-1);
     }
 
     // if((r = writeToFile(argv[2], &game)).err) {
@@ -39,10 +39,17 @@ int main(int argc, char **argv) {
     //     printf("%02X ", game.romData[i]&0Xff);
     // }
 
-    Result opres = decodeNextIntruction(&game);
+    while(1){
+        ResultInstruction opres = decodeNextIntruction(&game);
 
-    if(!opres.err) {
-        printf("%02X ", opres.res.BYTE_RESULT);
+        if(opres.err != NULL) {
+            fprintf(stderr, "%s", opres.err);
+            exit(-1);
+        }
+
+        if (game.currPos >= &game.data[193]) {
+            break;
+        }
     }
 
     return 0;

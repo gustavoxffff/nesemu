@@ -3,6 +3,7 @@ build/
 
 # Cache
 .cache/
+compile_commands.json
 
 # Legal and size purposes
 roms/

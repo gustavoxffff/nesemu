@@ -10,6 +10,10 @@ if(DEBUG)
     add_compile_definitions(DEBUG)
 endif()
 
+if(RELEASE)
+    SET(CMAKE_C_FLAGS_RELEASE "-O2")
+endif()
+
 file(GLOB_RECURSE _NesEmu_Sources
     "src/*.c"
 )
