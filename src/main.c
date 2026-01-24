@@ -7,40 +7,35 @@
 #include "Decoder.h"
 #include "Result.h"
 
-int cpuHz = 1790000000;
-
 int main(int argc, char **argv) {
+    ROM game;
+    memset(&game, 0, sizeof(ROM));
+    ResultVoid readFile;
 
     if (argc < 2) {
         fprintf(
             stderr,
-            "Usage: %s path/to/rom path/to/out\n",
+            "Usage:\n\tdecode instructions: %s path/to/rom",
             argv[0]
         );
 
         return -1;
     }
 
-    ROM game;
-    memset(&game, 0, sizeof(ROM));
-    ResultVoid res = readFromFile(argv[1], &game);
+    readFile = readFromFile(argv[1], &game);
 
-    if(res.err) {
-        fprintf(stderr, "%s\n", res.err);
-        exit(-1);
+    if(readFile.err) {
+        fprintf(stderr, "%s\n", readFile.err);
+        return -1;
     }
-
-    // if((r = writeToFile(argv[2], &game)).err) {
-    //     fprintf(stderr, "%s\n", r.err);
-    //     return -1;
-    // }
-
-    // for (unsigned long i = 0; i < game.romSize; i++) {
-    //     printf("%02X ", game.romData[i]&0Xff);
-    // }
-
+    
     while(1){
-        ResultInstruction opres = decodeNextIntruction(&game);
+        ResultInstruction opres = parseNextIntruction(&game);
+        Intruction ins = opres.data;
+
+        printf("%s\n", ins.str);
+
+        free(ins.str);
 
         if(opres.err != NULL) {
             fprintf(stderr, "%s", opres.err);
@@ -51,6 +46,6 @@ int main(int argc, char **argv) {
             break;
         }
     }
-
+    
     return 0;
 }

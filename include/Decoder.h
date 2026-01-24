@@ -4,14 +4,15 @@
 #include "Result.h"
 #include "Rom.h"
 
-typedef struct intruction {
+typedef struct Intruction {
+    char *str;
     uint8_t data[3];
     unsigned short pos;
-}intruction;
+}Intruction;
 
 #ifndef RESULT_INSTRUCTION
 #define RESULT_INSTRUCTION
-DEFINE_RESULT(intruction, Instruction)
+DEFINE_RESULT(Intruction, Instruction)
 #endif
 
 #ifndef RESULT_INT
@@ -29,6 +30,6 @@ DEFINE_RESULT(uint8_t, Byte)
 DEFINE_RESULT(uint8_t*, BytePtr)
 #endif
 
-ResultInstruction decodeNextIntruction(ROM *rom);
+ResultInstruction parseNextIntruction(ROM *rom);
 
 #endif
