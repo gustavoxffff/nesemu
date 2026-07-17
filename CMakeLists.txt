@@ -4,16 +4,6 @@ project(NesEmu VERSION 0.1.0)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-if(DEBUG)
-    SET(CMAKE_C_FLAGS "-Wall -Wextra -Wpedantic -g -ggdb")
-    SET(CMAKE_C_FLAGS_RELEASE "-O0")
-    add_compile_definitions(DEBUG)
-endif()
-
-if(RELEASE)
-    SET(CMAKE_C_FLAGS_RELEASE "-O2")
-endif()
-
 file(GLOB_RECURSE _NesEmu_Sources
     "src/*.c"
 )
