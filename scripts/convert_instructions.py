@@ -257,21 +257,21 @@ instructions = {
 	0xFF: ['ISC', 'abs,X']
 }
 
-map = {  
-  "":"none",
-  "A":"acc",
-  "abs":"abs",
-  "abs,X":"absx",
-  "abs,Y":"absy",
-  "#":"imm",
-  "impl":"impl",
-  "ind":"ind",
-  "ind,X":"indx",
-  "ind,Y":"indy",
-  "rel":"rel",
-  "zpg":"zpg",
-  "zpg,X":"zpgx",
-  "zpg,Y":"zpgy",
+addresses_map = {  
+  "":"NONE",
+  "A":"ACC",
+  "abs":"ABS",
+  "abs,X":"ABSX",
+  "abs,Y":"ABSY",
+  "#":"IMM",
+  "impl":"IMPL",
+  "ind":"IND",
+  "ind,X":"INDX",
+  "ind,Y":"INDY",
+  "rel":"REL",
+  "zpg":"ZPG",
+  "zpg,X":"ZPGX",
+  "zpg,Y":"ZPGY",
 }
 
 def left_pad(a: int, content: str) -> str:
@@ -287,12 +287,16 @@ def left_pad(a: int, content: str) -> str:
 
 nextEndTok = ""
 x = 1
+lineCounter = 1
+
+print(f"/* {hex(0)} */ ", end="")
 for ins in instructions:
 	if x == 16:
-		nextEndTok = "\n"
+		nextEndTok = f"\n/* {hex(lineCounter)} */ "
 		x = 0
+		lineCounter += 1
 	else:
 		nextEndTok = ""
-	content = f"{map.get(instructions.get(ins)[1])},"
-	print(f"{left_pad(6, content)}", end=nextEndTok)
+	content = f"{{{instructions.get(ins)[0]}, {addresses_map.get(instructions.get(ins)[1]) or "NONE"}}}, "
+	print(f"{left_pad(15, content)}", end=nextEndTok)
 	x += 1;
