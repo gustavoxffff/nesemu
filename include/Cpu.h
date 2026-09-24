@@ -20,7 +20,7 @@ typedef enum {
 } AddressMode;
 
 // Implement 256 instructions FF (Counting illegal ones)
-AddressMode instructions[256] = {
+static AddressMode instructions[256] = {
   //      |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  A  |  B  |  C  |  D  |  E  |  F  | 
   /* 0 */  impl, none,  zpg,  zpg, impl,  imm,  acc,  abs,  abs,  rel, indy, zpgx, zpgx, impl, absy, absx,
   /* 1 */  absx,  abs, none,  zpg,  zpg,  zpg, impl,  imm,  acc,  abs,  abs,  abs,  rel, indy, zpgx, zpgx,
